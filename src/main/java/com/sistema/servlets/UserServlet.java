@@ -1,12 +1,15 @@
 package com.sistema.servlets;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.sistema.models.User;
 import com.sistema.services.UserService;
 import com.sistema.services.impl.UserServiceImpl;
 
@@ -17,7 +20,7 @@ import com.sistema.services.impl.UserServiceImpl;
 public class UserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private UserService usuarioService = new UserServiceImpl();
+	private UserService userService = new UserServiceImpl();
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -33,8 +36,9 @@ public class UserServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
+		List<User> users = userService.findAllUsersWithRoles();
+		request.setAttribute("users", users);
+		request.getRequestDispatcher("/WEB-INF/views/users.jsp").forward(request, response);
 	}
 
 	/**

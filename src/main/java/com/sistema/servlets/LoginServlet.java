@@ -19,7 +19,7 @@ import com.sistema.services.impl.UserServiceImpl;
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private UserService usuarioService = new UserServiceImpl();
+	private UserService userService = new UserServiceImpl();
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -51,7 +51,7 @@ public class LoginServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		User user = usuarioService.getUserAndRoleByUsernameAndPassword(username, password);
+		User user = userService.getUserAndRoleByUsernameAndPassword(username, password);
 		if (user != null) {
 			HttpSession session = request.getSession();
 			session.setAttribute("user", user);
