@@ -6,9 +6,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import com.sistema.services.UsuarioService;
-import com.sistema.services.impl.UsuarioServiceImpl;
+import com.sistema.models.User;
+import com.sistema.services.UserService;
+import com.sistema.services.impl.UserServiceImpl;
 
 /**
  * Servlet implementation class LoginServlet
@@ -17,7 +19,7 @@ import com.sistema.services.impl.UsuarioServiceImpl;
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private UsuarioService usuarioService = new UsuarioServiceImpl();
+	private UserService usuarioService = new UserServiceImpl();
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -33,8 +35,12 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
+		HttpSession session = request.getSession(false);
+		if (session == null || session.getAttribute("user") == null) {
+			request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
+		} else {
+			response.sendRedirect("/welcome.do");
+		}
 	}
 
 	/**
@@ -45,11 +51,14 @@ public class LoginServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		if (usuarioService.isUserInDatabase(username, password) != null) {
-			response.sendRedirect("/welcome.do");	
-		}else {		
+		User user = usuarioService.getUserAndRoleByUsernameAndPassword(username, password);
+		if (user != null) {
+			HttpSession session = request.getSession();
+			session.setAttribute("user", user);
+			response.sendRedirect("/welcome.do");
+		} else {
 			request.setAttribute("errorMessage", "username or password incorrect");
-			request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);			
+			request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
 		}
 
 	}

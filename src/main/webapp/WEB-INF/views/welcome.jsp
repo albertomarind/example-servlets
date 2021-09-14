@@ -15,5 +15,10 @@
 			</div>
 		</div>
 	</div>
+	<div class="row">
+		<div class="col">
+			<a class="btn btn-warning" href="/logout.do">Log out</a>
+		</div>
+	</div>
 </div>
 <%@ include file="../common/header.jspf"%>

@@ -13,15 +13,16 @@ import com.sistema.services.impl.UserServiceImpl;
 /**
  * Servlet implementation class LoginServlet
  */
-@WebServlet(value = "/welcome.do")
-public class WelcomeServlet extends HttpServlet {
+@WebServlet(value = "/users.do")
+public class UserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
+	private UserService usuarioService = new UserServiceImpl();
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public WelcomeServlet() {
+	public UserServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -32,12 +33,26 @@ public class WelcomeServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/views/welcome.jsp").forward(request, response);
+		// TODO Auto-generated method stub
+		request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
 	}
-	
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		//request.getRequestDispatcher("/WEB-INF/views/welcome.jsp").forward(request, response);
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		String rol = request.getParameter("rol");
+//		if (usuarioService.isUserInDatabase(username, password) != null) {
+//			response.sendRedirect("/welcome.do");
+//		} else {
+//			request.setAttribute("errorMessage", "username or password incorrect");
+//			request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
+//		}
 
 	}
+
 }

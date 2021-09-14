@@ -55,7 +55,7 @@
 					<version>2.2</version>
 					<configuration>
 						<path>/</path>
-						<contextReloadable>true</contextReloadable>
+						<contextReloadable>false</contextReloadable>
 					</configuration>
 				</plugin>
 			</plugins>
