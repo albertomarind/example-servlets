@@ -1,30 +1,34 @@
 package com.sistema.servlets;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
+import com.sistema.models.Role;
 import com.sistema.models.User;
+import com.sistema.services.RoleService;
 import com.sistema.services.UserService;
+import com.sistema.services.impl.RoleServiceImpl;
 import com.sistema.services.impl.UserServiceImpl;
 
 /**
  * Servlet implementation class LoginServlet
  */
-@WebServlet(value = "/login.do")
-public class LoginServlet extends HttpServlet {
+@WebServlet(value = "/add-user.do")
+public class AddUserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	private RoleService roleService = new RoleServiceImpl();
 	private UserService userService = new UserServiceImpl();
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public LoginServlet() {
+	public AddUserServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -35,12 +39,9 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		HttpSession session = request.getSession(false);
-		if (session == null || session.getAttribute("user") == null) {
-			request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
-		} else {
-			response.sendRedirect("/list-users.do");
-		}
+		List<Role> roles = roleService.findAll();
+		request.setAttribute("roles", roles);
+		request.getRequestDispatcher("/WEB-INF/views/add-user.jsp").forward(request, response);
 	}
 
 	/**
@@ -51,16 +52,20 @@ public class LoginServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		User user = userService.getUserAndRoleByUsernameAndPassword(username, password);
-		if (user != null) {
-			HttpSession session = request.getSession();
-			session.setAttribute("user", user);
-			response.sendRedirect("/list-users.do");
+		String idRole = request.getParameter("idRole");
+		Role role = new Role();
+		role.setId(Integer.valueOf(idRole));
+		User user = new User();
+		user.setUsername(username);
+		user.setPassword(password);
+		user.setRole(role);
+		User userCreated = userService.save(user);
+		if (userCreated != null) {
+			request.setAttribute("infoMessage", "User created");
 		} else {
-			request.setAttribute("errorMessage", "username or password incorrect");
-			request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
+			request.setAttribute("errorMessage", "An error has occurred");
 		}
-
+		request.getRequestDispatcher("/WEB-INF/views/add-user.jsp").forward(request, response);
 	}
 
 }

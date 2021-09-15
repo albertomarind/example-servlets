@@ -9,23 +9,24 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.sistema.models.Role;
 import com.sistema.models.User;
-import com.sistema.services.UserService;
-import com.sistema.services.impl.UserServiceImpl;
+import com.sistema.services.RoleService;
+import com.sistema.services.impl.RoleServiceImpl;
 
 /**
  * Servlet implementation class LoginServlet
  */
-@WebServlet(value = "/users.do")
-public class UserServlet extends HttpServlet {
+@WebServlet(value = "/list-roles.do")
+public class ListRoleServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private UserService userService = new UserServiceImpl();
+	private RoleService roleService = new RoleServiceImpl();
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public UserServlet() {
+	public ListRoleServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -36,9 +37,9 @@ public class UserServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		List<User> users = userService.findAllUsersWithRoles();
-		request.setAttribute("users", users);
-		request.getRequestDispatcher("/WEB-INF/views/users.jsp").forward(request, response);
+		List<Role> roles = roleService.findAll();
+		request.setAttribute("roles", roles);
+		request.getRequestDispatcher("/WEB-INF/views/list-roles.jsp").forward(request, response);
 	}
 
 	/**

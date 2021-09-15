@@ -25,4 +25,9 @@ public class UserServiceImpl implements UserService {
 		return usuarioDao.findAllUsersWithRoles();
 	}
 
+	@Override
+	public User save(User user) {
+		return usuarioDao.save(user);
+	}
+
 }

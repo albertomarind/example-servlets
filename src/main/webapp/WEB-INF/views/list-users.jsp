@@ -5,6 +5,9 @@
 		<%@ include file="../common/menu.jspf"%>
 		<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
 			<h2>Users</h2>
+			<div class="text-end">
+				<a class="btn btn-primary" href="/add-user.do">Add user</a>
+			</div>
 			<div class="table-responsive">
 				<table class="table table-striped table-sm">
 					<thead>

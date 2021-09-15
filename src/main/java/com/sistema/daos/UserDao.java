@@ -9,4 +9,6 @@ public interface UserDao {
 	User getUserAndRoleByUsernameAndPassword(String username, String password);
 
 	List<User> findAllUsersWithRoles();
+	
+	User save(User user);
 }
